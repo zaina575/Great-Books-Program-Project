@@ -1,0 +1,83 @@
+Problem we are solving: Creating a Greats Book Program where it shows all the entries within a data file(.dat) and we can search for
+the a particular title within the file.
+
+Use the main method as a client program.
+The main method will only have one method call that starts the program.
+The ArrayList of LibraryBook objects will be declared.
+There will be an integer called numBooks that is created also.
+
+
+There will be 8 methods.
+
+1. I will create a method that recieves input from a data file and insert each book into an ArrayList.
+2. I will create a method that sorts the ArrayList using the selection sort.
+3. I will create a method that prints out the main menu screen with the three different opitions.
+4. I will create a method that prints out the introduction screen where it asks what file to use.
+5. I will create a method that prints the record of a certain book.
+6. I will create a method that use a binary search to find a certain title.
+7. I will create a method that shows the files in the current directory.
+8. I will create a method that clears the screen.
+
+
+
+In the inputBooks method, I will pass in the parameters of a String that represent the input file selected and an ArrayList of LibraryBook
+objects. The method will be void because we want the ArrayList object to make a permanent change. I will create a Scanner that reads the
+file. I will create a while loop that continues to read the file until there is nothing left in the file. In the while loop, there will be
+another Scanner object that will break down the file into its part using a delimeter. The delimeter will allow the different parts of the
+file to be stored as different variables that gives information about each book. Then,the LibraryBook object will be created with the 
+parameters as the different variables and added to the ArrayList. Then, the variable numBooks will be incremented till the whole file is 
+read and returned. I will add a switch statement to ensure that the genre of the book was not just the abbreviation, and I add this before 
+inputting the LibraryBook object into the ArrayList.
+
+
+In the sortbyTitle method, I will use the selection sort code that Dr.Digh previously provided to us. However, I will have to modify it 
+because the temporary variable cannot be an integer. The temporary variable must be a LibraryBook object. In addition, the code
+Dr.Digh provided is for a selection sort using an array, so I have to modify the three statements that swap the LibraryBook object at the 
+two indexes that are being switched using ArrayList commands such as .get() and .set(). Futhermore, I have to compare the book titles, so
+I need to call the .getTitle() method from the LibraryBook class and use it to compare the titles of two LibraryBook objects. I will 
+compareTo() method to compare the titles. I will pass the parameters of the ArrayList of LibraryBooks and the integer of numBooks.
+
+
+In the printMenu method, I will pass in the parameters of the ArrayList of LibraryBooks and the integer of numBooks. I will 
+create three variables before I use a loop. I will declare a Scanner object and two Strings. I will use a do while loop and have
+a switch statement inside. The switch statement will be used to navagate between the three options. One of the strings declared 
+before the do while loop will store the choice that person picks using the input from the Scanner. The first case will call the method that 
+prints out the records by pressing return or m to return to the menu. The second case will call the method that does a binary search for a
+certain title and returns the index, so it can be printed to the screen. The third case will stop the method completely breaking and sending 
+an exit message. There will also be a default case that will print an error message and ask the user to try again. There needs to be 
+error checking to ensure that the program does not crash when something other than an integer is put into the choice integer.
+
+
+In the introScreen method, I will pass in the parameter the ArrayList of LibraryBooks and the integer of numBooks. The introScreen will print
+"Book Seach Program."Then, it will print out the files in the current directory. Then, it will prompt to ask which file from the directory
+to use. A Scanner will capture the user input. If the file name inputted by the user does not match any of the files in the directory, it 
+will prompt the user to keep putting a valid file name. I will use a while loop to ensure this. Once a valid file name is inputted,
+a Scanner object will be created to read the file in order to determine how many books are in the file. The number of books in the file
+is based off the number of lines in the file. I will use a count variable and the function hasNextLine() to print the number of books 
+to the screen. After, I will call the inputBooks method and the printMenu method to change the screen using the enter key and store 
+the data that is related to the file we chose in this directory.
+
+
+In the displayRecords method, I will call the sortbyTitle method to ensure that the records are in order when they will be printed.  
+I will pass the parameters of a Scanner object, the ArrayList of LibraryBooks, and the integer of numBooks. I will use a for loop
+to iterate through the ArrayList.I will clear the screen each time and call the toString() method that I created in the LibraryBook
+class to print the records. I will also create a string that stores input from the Scanner to see if enter was just clicked
+or if "M" or "m" was pressed for seeing more records or returning to the menu.
+
+
+
+In the searchBook method, I will use the binary search code that Dr.Digh previously provided to us. However, I will modify it 
+because we are comparing the book titles of each LibraryBook object to the String key that is passed in as a parameter. Therefore,
+I will use the compareTo() method to compare the String key and the current title. The method will return the index in the ArrayList
+where the title is found, or it will return -1 if it is not found. The parameters that will be passed are the ArrayList of LibraryBooks, the
+integer of numBooks, and the String key.
+
+
+In the showFiles method, I will the use the code provided in the Prog2 directory to show all the files in the current directory that end
+in .dat. 
+
+In the clearScreen method, I will use the code provided in the Prog2 directory to clear the Screen as necessary throughout the program. 
+
+
+
+I will do error checking at the end to ensure that my program does not crash.

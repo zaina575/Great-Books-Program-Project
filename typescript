@@ -1,0 +1,683 @@
+Script started on Fri 21 Feb 2020 01:34:57 PM EST
+]0;khutliwala_z@cobra:~/CSC205/Prog2[?1034h[khutliwala_z@cobra Prog2]$ vim library.dat
+[?1049h[?1h=[2;1H▽[6n[2;1H  [1;1H]11;?[1;47r[?12;25h[?12l[?25h[27m[m[H[2J[?25l[47;1H"library.dat" 15L, 677C[>c[1;1HTom Sawyer;Twain, Mark;1972;8.50;f;
+Leaves of Grass;Whitman, Walt;1975;29.99;p;
+Romeo and Juliet;Shakespeare, William;1980;4.99;d;
+Great Gatsby;Fitzgerald, F. Scott;1979;5.99;f;
+Scarlet Letter;Hawthorne, Nathaniel;1981;4.78;f;
+Whisper of the River;Sams, Ferrol;1984;21.95;f;
+Moby Dick;Melville, Herman;1962;13.98;f;
+Last of the Mohicans;Cooper, James Fenimore;1968;8.75;f;
+Odyssey;Homer;1950;9.99;f;
+Christmas Carol;Dickens, Charles;1966;12.50;f;
+Les Miserables;Hugo, Victor;1988;19.98;f;
+Heart of Darkness;Conrad, Joseph;1970;14.45;f;
+Animal Farm;Orwell, George;1978;10.00;f;
+Canterbury Tales;Chaucer, Geoffrey;1965;20.00;d;
+Old Man and the Sea;Hemingway, Ernest;1966;9.95;f;
+[1m[34m~                                                                                                                                            [17;1H~                                                                                                                                            [18;1H~                                                                                                                                            [19;1H~                                                                                                                                            [20;1H~                                                                                                                                            [21;1H~                                                                                                                                            [22;1H~                                                                                                                                            [23;1H~                                                                                                                                            [24;1H~                                                                                                                                            [25;1H~                                                                                                                                            [26;1H~                                                                                                                                            [27;1H~                                                                                                                                            [28;1H~                                                                                                                                            [29;1H~                                                                                                                                            [30;1H~                                                                                                                                            [31;1H~                                                                                                                                            [32;1H~                                                                                                                                            [33;1H~                                                                                                                                            [34;1H~                                                                                                                                            [35;1H~                                                                                                                                            [36;1H~                                                                                                                                            [37;1H~                                                                                                                                            [38;1H~                                                                                                                                            [39;1H~                                                                                                                                            [40;1H~                                                                                                                                            [41;1H~                                                                                                                                            [42;1H~                                                                                                                                            [43;1H~                                                                                                                                            [44;1H~                                                                                                                                            [45;1H~                                                                                                                                            [46;1H~                                                                                                                                            [m[47;124H15,1[10CAll[15;1H[?12l[?25h[?25l[47;1H[K[47;1H:[?12l[?25hw[?25l[?12l[?25hq[?25l[?12l[?25h[?25l"library.dat" 15L, 677C written
+[?1l>[?12l[?25h[?1049l]0;khutliwala_z@cobra:~/CSC205/Prog2[khutliwala_z@cobra Prog2]$ cat play.java
+import java.util.*;
+import java.io.*;
+
+
+public class play
+{
+	public static void main(String[] args) throws IOException{
+
+	ArrayList<LibraryBook> books = new ArrayList<LibraryBook>(50); //arrayList of Library Book objects
+	int numBooks = 0; //variable that calls inputBooks method and stores the number of Books
+	introScreen(books,numBooks); //calling intro screen method to start the program
+	}
+	
+
+
+	//filling the ArrayList of LibraryBooks using an external file passed into the method
+	//Precondition: The ArrayList that stores LibraryBook objects should not have any values stored and have a pre-set size of 50.
+	//Postcondition: The ArrayList that stores LibraryBook objects will be intialized with the external file as LibraryBook objects.
+	public static int inputBooks(String inputFile, ArrayList<LibraryBook> books){
+
+	int numBooks = 0; //initialize the numBooks variable to zero
+	try {
+
+		Scanner in = new Scanner(new File(inputFile)); //scanner that read the inputFile that is passed
+		while(in.hasNext()) //will keep reading the file until the end
+		{
+		Scanner lsc = new Scanner(in.nextLine()).useDelimiter(";"); //breaking the file into its various pieces using the delimeter
+
+
+		String title = lsc.next(); //stores title variable
+		String name = lsc.next(); //stores author variable
+		int copyright = lsc.nextInt(); //stores copyright year variable
+		double price = lsc.nextDouble(); //stores price of book variable
+		String genre = lsc.next(); //stores genre of book variable
+
+	//switch statement to change the abbreviation to the actual type of genre
+		switch(genre) {
+		case "f":
+		genre = "Fiction";
+		break;
+		case "d":
+		genre = "Drama";
+		break;
+		case "p": 
+		genre = "Poetry";
+		break;
+		}
+		
+		books.add(new LibraryBook(title,name,copyright,price,genre)); //add LibraryBook object to the ArrayList by passing as the                    variables as the parameters
+		numBooks++; //increments numBooks everytime a LibraryBook object is added to the ArrayList
+		}
+
+	     }
+
+	 	catch (IOException e) {
+
+		System.out.println(e.getMessage());
+		
+		}
+		//error catching present (try & catch)
+		return numBooks; //returns number of books in the ArrayList
+	}
+
+	//sorting the Library Books by title
+	//Precondition: The ArrayList of LibraryBook objects should be intialized with the external file data.
+	//Postcondition: The ArrayList of LibraryBook objects will be sorted by Title by using a selection sort.
+	public static void sortbyTitle (ArrayList<LibraryBook> books, int numBooks){
+	//selection sort code using ArrayLists
+	int minIndex, index, j; //declaring a minIndex, index, and j variable
+	LibraryBook temp;//temp variable that is a LibraryBook object
+	int pass = 0;
+
+       for(index = 0; index < numBooks-1; index ++){
+
+	minIndex = index;
+
+	for(j= minIndex+1; j<numBooks; j++){
+	if((books.get(j).getTitle()).compareTo(books.get(minIndex).getTitle()) <0) //compares the 2 titles of the LibraryBook objects
+	{
+		minIndex = j;
+	}
+	}
+	if(minIndex != index){
+	temp = books.get(index);
+	books.set(index,books.get(minIndex));
+	books.set(minIndex,temp);
+	//3 lines that switch the positions of the LibraryBook objects (between the 2 indexes)
+	}
+
+	}
+	}
+
+
+	//printing out the main menu
+	//Precondition:An external file is chosen that ends with .dat and the contents of the file are stored in the ArrayList of Library              Book objects.
+	//Postcondition:The method will keep taking user input using a Scanner until the user decides to exit the program.
+	public static void printMenu(ArrayList <LibraryBook> books, int numBooks){
+
+	String choice; //stores the option that user picks
+	String key;//String key for case 2 when finding a title using a Binary Search
+	Scanner input  = new Scanner(System.in); //creating a Scanner name input 
+ do{
+
+	System.out.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
+        System.out.println("            THE GREAT BOOKS SEARCH PROGRAM                 ");
+        System.out.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
+        System.out.println();
+        System.out.println(" 1) Display all book records");
+        System.out.println(" 2) Search for a book by Title");
+        System.out.println(" 3) Exit Search Program");
+        System.out.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
+        System.out.println();
+	System.out.print("     Please enter Your Choice > ");
+	choice = input.nextLine(); //stores the input of the user from the Scanner
+	//switch statement that goes through to see if it matches any of the options
+	switch(choice){
+	case "1":{
+	clearScreen(); 
+	Scanner in = new Scanner(System.in); //creates a Scanner named in to pass into the displayRecords method
+	displayRecords(in,books,numBooks); //calls the displayRecords method and runs it until the user returns to the main menu
+	clearScreen();
+	break;}
+	case "2":{
+	System.out.print("     Search Title > ");
+	Scanner inputkey = new Scanner(System.in); //creates a Scanner named inputkey to store the key that will be passed in searchBook
+	key = inputkey.nextLine(); //changes the String key to the input from the user
+	int index = searchBook(books,numBooks,key); //stores the index returned from calling the searchBook method
+	//if statement that ensures it prints a record that is at a valid index
+	if(index!=-1){
+	clearScreen();
+	System.out.println("     Book Found in Alphabetized List in:");
+	System.out.println();
+	System.out.print("     Record #" + String.valueOf(index + 1) + ":\n");
+	System.out.println(books.get(index).toString()); //using toString() method from LibraryBook class to print the record
+	System.out.print("      Please Hit Return to Continue...");
+        String input2 = inputkey.nextLine();
+        if (input2.equalsIgnoreCase("M")) {
+        return;} //will stay at the same screen until enter key is pressed to return to the main menu
+        clearScreen();
+	}
+	//error message if Book Title is not found in the ArrayList of LibraryBook objects
+	else {
+	System.out.println();
+	System.out.println("      Sorry, the book was not found.");
+	System.out.println();
+	System.out.print("      Please Hit Return to Continue...");
+	String input2 = inputkey.nextLine();
+        if (input2.equalsIgnoreCase("M")) {
+        return;} //will stay at the same screen until the enter key is pressed to reset the screen
+	clearScreen();}
+	break;}
+	case "3":{
+	System.out.println("     Goodbye. Have a nice day. :-)"); //print exit message
+	break;}	//stops the program from completely running
+	default:{
+	System.out.println("     You have made an error. Please try again."); //error messages will pop up if it is anything other than 1,2,         or 3
+	System.out.println();
+	System.out.println("     Please enter 1, 2, or 3");
+	System.out.print("       Please Hit Return to Continue..."); 
+	Scanner return1 = new Scanner(System.in);
+	return1.nextLine(); //hitting return to reset the screen
+	clearScreen(); 
+	break;
+	}
+	}}while(!(choice.equals("3"))); //while choice does not equal 3 keep running the program
+	}
+	
+	
+
+	//printing out the bookSearch main screen
+	//Precondition: The ArrayList that stores LibraryBook objects should not have any values stored and have a pre-set size of 50.
+	//Postcondition: The ArrayList that stores LibraryBook objects will be initialized with the external file as LibraryBook objects, and         the program will be directed to the main menu with the three options.
+	public static void introScreen(ArrayList <LibraryBook> books, int numBooks) throws IOException{
+	clearScreen();
+	System.out.println("                      THE BOOK SEARCH PROGRAM                       ");
+	System.out.println("--------------------------------------------------------------------");
+	System.out.println();
+        System.out.println("    What file is your book data stored in?");
+	System.out.println();
+	System.out.println("    Here are the files in the current directory:");
+	System.out.println();
+	ArrayList<String> files = showFiles(); //call showFiles method and stores them in an ArrayList of String objects called files
+	System.out.println();
+	System.out.print("    Filename : ");
+	Scanner filen = new Scanner(System.in); //created a Scanner to receive user input of what file they would like to select
+	String fileinput = filen.nextLine(); //takes the input from the user of what file they would like to select and stores it as a               String object
+	//while loop that compares file names in the ArrayList called files to user input to ensure that it is present in the directory
+	//will keep showing error messages until valid file name is typed
+	while(files.contains(fileinput)==false){
+	System.out.println();
+	System.out.println("    ** Can't open input file. Try again. **");
+	System.out.println();
+	System.out.println("    Here are the files in the current directory:");
+	System.out.println();
+	showFiles();
+	System.out.println();
+	System.out.print("    Filename: ");
+	fileinput = filen.nextLine();
+	if(files.contains(fileinput) == true){
+	break;
+	}
+	}
+	System.out.println();
+	Scanner inFile = new Scanner(new File(fileinput)); //Scanner that reads a valid file in the directory
+	int count = 0; //count variable that counts the number of books in the file by counting the number of lines
+	//while loop to count number of lines in the file
+	while(inFile.hasNextLine()){
+	count++; //increments the count variable
+	inFile.nextLine();
+	} 
+	System.out.println("    A total of " + count + " have been input & sorted by title."); //prints out the number of books in the file
+	System.out.println();
+	System.out.print("    Please Hit Return to Continue...");
+	Scanner enter = new Scanner(System.in); //Scanner called enter that allows the user to proceed to the main menu by pressing enter
+	enter.nextLine();
+	clearScreen();
+	numBooks = inputBooks(fileinput,books);	//calls inputBooks method to store the input file contents into the ArrayList of LibraryBook         objects
+	printMenu(books,numBooks); //prints the main menu
+        }
+
+	//displays all the records by hitting return
+	//Precondition: The ArrayList of LibraryBook objects should be intialized with the external file data.
+	//Postcondition: All the records will be displayed until the user hits "M" or "m" button on their keyboard or goes through                   all the records.
+	public static void displayRecords(Scanner stdin, ArrayList<LibraryBook> books, int numBooks){
+	sortbyTitle(books,numBooks); //calls sortbyTitle to ensure that the ArrayList of LibraryBook objects is sorted
+	for (int i = 0; i < numBooks; ++i) {
+      	clearScreen();
+        System.out.print("      Record #" + String.valueOf(i + 1) + ":\n");
+     	System.out.println(books.get(i).toString());//calls toString() method of LibraryBook class to print the record at the current index
+        System.out.print("Please hit return to continue or M for menu.");
+        String input = stdin.nextLine(); 
+        if (input.equalsIgnoreCase("M")) {
+        return; //will stay at the same screen until return or "M" or "m" button on the keyboard is pressed
+      	}
+       	}clearScreen();
+	}
+	
+	
+	
+	
+	//finding a certain book title using binary search
+	//Precondition: The ArrayList of LibraryBook objects should be initialized with the external file data, and a String should have been          passed from a user's input of what book they are trying to find.
+	//Postcondition: An integer is returned indicating the index of the LibraryBook object that matches the title(key) being passed. It            will return -1 if not found.
+	public static int searchBook(ArrayList<LibraryBook> books, int numBooks, String key){
+	 sortbyTitle(books,numBooks); //ensures that the ArrayList of LibraryBook objects is sorted before doing binary search
+	int first = 0, last = numBooks-1, middle, location; //declares variables first,last,middle, and location
+	boolean found = false; //boolean that indicates if the title was found or not
+	//binary search code 
+	do
+	{
+		middle = (first+last) /2; 
+			
+		if(key.compareTo(books.get(middle).getTitle())==0) //if title is found returns true
+		{
+		found = true;
+		}
+		else if(key.compareTo(books.get(middle).getTitle())<0){ 
+		last = middle-1;
+		}
+		else
+		first = middle+1;
+		//keeps comparing until it is found or runs out of checks
+	}while((!found) && (first<=last));
+	location = middle;
+	return (found ? location: -1); //if found return index, if not return -1
+}
+
+
+	//printing out files that end in .dat 
+	//Precondition: Must be in the current directory that you are looking for files in.
+	//Postcondition: An ArrayList of Strings will be returned that have the file names that end in .dat.
+	public static ArrayList<String> showFiles(){
+         File curDir = new File(".");
+	 String[] fileNames = curDir.list();
+	 ArrayList<String> data = new ArrayList<String>(); //creates ArrayList that stores the files if they end in .dat
+	 for(String s:fileNames)
+	  if(s.endsWith(".dat"))                                                                                                                         data.add(s); //adds the file if the file ends in .dat
+	//for loop that prints out the files that end in .dat
+	for(int i =0; i<data.size(); i++){
+	System.out.print(data.get(i)+ " "); 
+	}
+	return data; //returns the ArrayList of String objects that have files that end in .dat
+	}
+
+	//clearScreen method
+	//Precondition: java.lang. package must be imported
+	//Postcondition:Clears the screen entirely.
+     public static void clearScreen()
+    {
+        System.out.println("\u001b[H\u001b[2J");
+    }
+
+}	
+]0;khutliwala_z@cobra:~/CSC205/Prog2[khutliwala_z@cobra Prog2]$ java play.java
+Error: Could not find or load main class play.java
+]0;khutliwala_z@cobra:~/CSC205/Prog2[khutliwala_z@cobra Prog2]$ javac play.java
+]0;khutliwala_z@cobra:~/CSC205/Prog2[khutliwala_z@cobra Prog2]$ java play
+[H[2J
+                      THE BOOK SEARCH PROGRAM                       
+--------------------------------------------------------------------
+
+    What file is your book data stored in?
+
+    Here are the files in the current directory:
+
+play.dat library.dat 
+    Filename : library.dat
+
+    A total of 15 have been input & sorted by title.
+
+    Please Hit Return to Continue...
+[H[2J
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+            THE GREAT BOOKS SEARCH PROGRAM                 
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+ 1) Display all book records
+ 2) Search for a book by Title
+ 3) Exit Search Program
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+     Please enter Your Choice > 2
+     Search Title > Odyssey
+[H[2J
+     Book Found in Alphabetized List in:
+
+     Record #10:
+     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+               Title:            Odyssey
+       Author's Name:            Homer
+           Copyright:            1950
+               Price:            $09.99
+               Genre:            Fiction
+     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+      Please Hit Return to Continue...
+[H[2J
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+            THE GREAT BOOKS SEARCH PROGRAM                 
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+ 1) Display all book records
+ 2) Search for a book by Title
+ 3) Exit Search Program
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+     Please enter Your Choice > 2
+     Search Title > Animal Farm
+[H[2J
+     Book Found in Alphabetized List in:
+
+     Record #1:
+     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+               Title:            Animal Farm
+       Author's Name:            Orwell, George
+           Copyright:            1978
+               Price:            $10.0
+               Genre:            Fiction
+     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+      Please Hit Return to Continue...
+[H[2J
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+            THE GREAT BOOKS SEARCH PROGRAM                 
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+ 1) Display all book records
+ 2) Search for a book by Title
+ 3) Exit Search Program
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+     Please enter Your Choice > 2
+     Search Title > Last of the Moc hia cans
+[H[2J
+     Book Found in Alphabetized List in:
+
+     Record #6:
+     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+               Title:            Last of the Mohicans
+       Author's Name:            Cooper, James Fenimore
+           Copyright:            1968
+               Price:            $08.75
+               Genre:            Fiction
+     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+      Please Hit Return to Continue...
+[H[2J
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+            THE GREAT BOOKS SEARCH PROGRAM                 
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+ 1) Display all book records
+ 2) Search for a book by Title
+ 3) Exit Search Program
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+     Please enter Your Choice > 2
+     Search Title > Whisper of River     the River
+[H[2J
+     Book Found in Alphabetized List in:
+
+     Record #15:
+     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+               Title:            Whisper of the River
+       Author's Name:            Sams, Ferrol
+           Copyright:            1984
+               Price:            $21.95
+               Genre:            Fiction
+     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+      Please Hit Return to Continue...
+[H[2J
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+            THE GREAT BOOKS SEARCH PROGRAM                 
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+ 1) Display all book records
+ 2) Search for a book by Title
+ 3) Exit Search Program
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+     Please enter Your Choice > Macbeth
+     You have made an error. Please try again.
+
+     Please enter 1, 2, or 3
+       Please Hit Return to Continue...
+[H[2J
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+            THE GREAT BOOKS SEARCH PROGRAM                 
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+ 1) Display all book records
+ 2) Search for a book by Title
+ 3) Exit Search Program
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+     Please enter Your Choice > 2
+     Search Title > Macbeth
+
+      Sorry, the book was not found.
+
+      Please Hit Return to Continue...
+[H[2J
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+            THE GREAT BOOKS SEARCH PROGRAM                 
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+ 1) Display all book records
+ 2) Search for a book by Title
+ 3) Exit Search Program
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+     Please enter Your Choice > 1
+[H[2J
+[H[2J
+      Record #1:
+     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+               Title:            Animal Farm
+       Author's Name:            Orwell, George
+           Copyright:            1978
+               Price:            $10.0
+               Genre:            Fiction
+     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Please hit return to continue or M for menu.
+[H[2J
+      Record #2:
+     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+               Title:            Canterbury Tales
+       Author's Name:            Chaucer, Geoffrey
+           Copyright:            1965
+               Price:            $20.0
+               Genre:            Drama
+     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Please hit return to continue or M for menu.
+[H[2J
+      Record #3:
+     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+               Title:            Christmas Carol
+       Author's Name:            Dickens, Charles
+           Copyright:            1966
+               Price:            $12.5
+               Genre:            Fiction
+     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Please hit return to continue or M for menu.
+[H[2J
+      Record #4:
+     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+               Title:            Great Gatsby
+       Author's Name:            Fitzgerald, F. Scott
+           Copyright:            1979
+               Price:            $05.99
+               Genre:            Fiction
+     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Please hit return to continue or M for menu.
+[H[2J
+      Record #5:
+     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+               Title:            Heart of Darkness
+       Author's Name:            Conrad, Joseph
+           Copyright:            1970
+               Price:            $14.45
+               Genre:            Fiction
+     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Please hit return to continue or M for menu.
+[H[2J
+      Record #6:
+     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+               Title:            Last of the Mohicans
+       Author's Name:            Cooper, James Fenimore
+           Copyright:            1968
+               Price:            $08.75
+               Genre:            Fiction
+     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Please hit return to continue or M for menu.m
+[H[2J
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+            THE GREAT BOOKS SEARCH PROGRAM                 
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+ 1) Display all book records
+ 2) Search for a book by Title
+ 3) Exit Search Program
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+     Please enter Your Choice > 3
+     Goodbye. Have a nice day. :-)
+]0;khutliwala_z@cobra:~/CSC205/Prog2[khutliwala_z@cobra Prog2]$ java play
+[H[2J
+                      THE BOOK SEARCH PROGRAM                       
+--------------------------------------------------------------------
+
+    What file is your book data stored in?
+
+    Here are the files in the current directory:
+
+play.dat library.dat 
+    Filename : library.dat
+
+    A total of 15 have been input & sorted by title.
+
+    Please Hit Return to Continue...
+[H[2J
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+            THE GREAT BOOKS SEARCH PROGRAM                 
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+ 1) Display all book records
+ 2) Search for a book by Title
+ 3) Exit Search Program
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+     Please enter Your Choice > 2
+     Search Title > Of dyssey
+[H[2J
+     Book Found in Alphabetized List in:
+
+     Record #10:
+     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+               Title:            Odyssey
+       Author's Name:            Homer
+           Copyright:            1950
+               Price:            $09.99
+               Genre:            Fiction
+     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+      Please Hit Return to Continue...
+[H[2J
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+            THE GREAT BOOKS SEARCH PROGRAM                 
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+ 1) Display all book records
+ 2) Search for a book by Title
+ 3) Exit Search Program
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+     Please enter Your Choice > 2
+     Search Title > Animal Farm
+[H[2J
+     Book Found in Alphabetized List in:
+
+     Record #1:
+     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+               Title:            Animal Farm
+       Author's Name:            Orwell, George
+           Copyright:            1978
+               Price:            $10.0
+               Genre:            Fiction
+     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+      Please Hit Return to Continue...
+[H[2J
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+            THE GREAT BOOKS SEARCH PROGRAM                 
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+ 1) Display all book records
+ 2) Search for a book by Title
+ 3) Exit Search Program
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+     Please enter Your Choice > 2
+     Search Title > Last of the Moc hicans
+[H[2J
+     Book Found in Alphabetized List in:
+
+     Record #6:
+     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+               Title:            Last of the Mohicans
+       Author's Name:            Cooper, James Fenimore
+           Copyright:            1968
+               Price:            $08.75
+               Genre:            Fiction
+     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+      Please Hit Return to Continue...
+[H[2J
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+            THE GREAT BOOKS SEARCH PROGRAM                 
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+ 1) Display all book records
+ 2) Search for a book by Title
+ 3) Exit Search Program
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+     Please enter Your Choice > 2
+     Search Title > Whispher      per of the River
+[H[2J
+     Book Found in Alphabetized List in:
+
+     Record #15:
+     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+               Title:            Whisper of the River
+       Author's Name:            Sams, Ferrol
+           Copyright:            1984
+               Price:            $21.95
+               Genre:            Fiction
+     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+      Please Hit Return to Continue...
+[H[2J
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+            THE GREAT BOOKS SEARCH PROGRAM                 
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+ 1) Display all book records
+ 2) Search for a book by Title
+ 3) Exit Search Program
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+     Please enter Your Choice > Macbeth
+     You have made an error. Please try again.
+
+     Please enter 1, 2, or 3
+       Please Hit Return to Continue...
+[H[2J
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+            THE GREAT BOOKS SEARCH PROGRAM                 
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+ 1) Display all book records
+ 2) Search for a book by Title
+ 3) Exit Search Program
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+     Please enter Your Choice > 3
+     Goodbye. Have a nice day. :-)
+]0;khutliwala_z@cobra:~/CSC205/Prog2[khutliwala_z@cobra Prog2]$ exit
+exit
+
+Script done on Fri 21 Feb 2020 01:38:16 PM EST
